@@ -6,6 +6,7 @@ import 'package:stacked_services/stacked_services.dart';
 import '../app/app.locator.dart';
 import '../app/app.router.dart';
 import '../services/auth_service.dart';
+import '../services/theme_switcher_service.dart';
 import '../utils/setup_dialog.dart';
 
 class MainViewModel extends BaseViewModel {
@@ -13,6 +14,8 @@ class MainViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final DatabaseService _databaseService = locator<DatabaseService>();
   final DialogService _dialogService = locator<DialogService>();
+  final ThemeSwitcherService _themeSwitcherService =
+      locator<ThemeSwitcherService>();
 
   final PageController _pageController = PageController();
 
@@ -69,6 +72,7 @@ class MainViewModel extends BaseViewModel {
     _isButtonClicked = false;
 
     if (success) {
+      _themeSwitcherService.resetTheme();
       _navigationService.clearStackAndShow(Routes.loginView);
     }
   }
@@ -79,4 +83,9 @@ class MainViewModel extends BaseViewModel {
       variant: DialogType.chooseTheme,
     );
   }
+
+  bool isDarkMode() => _themeSwitcherService.isDarkMode.value ?? false;
+
+  void setIsDarkMode(bool setDarkMode) =>
+      _themeSwitcherService.setDarkTheme(setDarkMode);
 }

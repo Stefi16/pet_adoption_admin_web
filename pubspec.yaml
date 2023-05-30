@@ -47,7 +47,6 @@ dependencies:
   json_annotation: ^4.6.0
   dio: ^5.0.1
   stacked_services: ^0.9.9
-  shared_preferences: ^2.1.0
   flex_color_scheme: ^6.1.2
   email_validator: ^2.1.17
   intl: ^0.17.0
@@ -60,6 +59,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   uuid: ^3.0.7
   image_picker_web: ^3.0.0+1
+  day_night_switcher: ^0.2.0+1
 
 dev_dependencies:
   flutter_test:

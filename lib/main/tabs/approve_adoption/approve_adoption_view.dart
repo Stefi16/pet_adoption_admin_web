@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pet_adoption_admin_web/utils/extensions.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'approve_adoption_viewmodel.dart';
 
@@ -13,11 +14,25 @@ class ApproveAdoptionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final text = AppLocalizations.of(context);
+
     return ViewModelBuilder<ApproveAdoptionViewModel>.reactive(
       viewModelBuilder: () => ApproveAdoptionViewModel(),
       builder: (context, viewModel, child) {
         final adoptions = viewModel.getNotApprovedAdoptions();
         final theme = Theme.of(context);
+
+        if (adoptions.isEmpty) {
+          return Center(
+            child: Text(
+              text.noAdoptionsToApprove,
+              style: TextStyle(
+                color: theme.primaryColor,
+                fontSize: 25,
+              ),
+            ),
+          );
+        }
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -160,7 +175,7 @@ class _AdoptionPhoto extends StatelessWidget {
           },
           width: _photoSize,
           height: _photoSize,
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
           errorBuilder: (_, __, error) {
             log(error.toString());
             return const SizedBox.shrink();

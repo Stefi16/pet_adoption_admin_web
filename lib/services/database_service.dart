@@ -14,6 +14,8 @@ class DatabaseService {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   AppUser getCurrentUser() => _currentUser;
+
+  AppUser setCurrentUser(AppUser currentUser) => _currentUser = currentUser;
   AppUser _currentUser = AppUser.createNew('', '');
 
   List<AppUser> _users = [];

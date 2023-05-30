@@ -47,5 +47,6 @@
   "cityError": "Please enter a city with more than 1 symbol",
   "description": "Description",
   "descriptionError": "Please enter a description with at least 10 symbols",
-  "publish": "Publish"
+  "publish": "Publish",
+  "noAdoptionsToApprove": "Currently there are no adoptions that can be approved."
 }

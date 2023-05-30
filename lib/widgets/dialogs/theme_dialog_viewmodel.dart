@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:pet_adoption_admin_web/services/theme_switcher_service.dart';
 import 'package:stacked/stacked.dart';
@@ -9,7 +10,9 @@ class ThemeDialogViewModel extends BaseViewModel {
       locator<ThemeSwitcherService>();
 
   void onThemeTapped(int index) async {
-    await _themeSwitcherService.setColorTheme(index);
+    _themeSwitcherService.setColorTheme(
+      FlexScheme.values.elementAt(index),
+    );
     notifyListeners();
   }
 

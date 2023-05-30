@@ -1,32 +1,33 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-const String _themeModeKey = 'themeModeKey';
-const String _themeColorKey = 'themeColorKey';
+import 'package:pet_adoption_admin_web/app/app.locator.dart';
+import 'package:pet_adoption_admin_web/services/database_service.dart';
 
 class ThemeSwitcherService {
-  late final SharedPreferences _sharedPreferences;
+  final DatabaseService _databaseService = locator<DatabaseService>();
 
   final ValueNotifier<bool?> _isDarkMode = ValueNotifier<bool?>(false);
+
   ValueNotifier<bool?> get isDarkMode => _isDarkMode;
 
   final ValueNotifier<int?> _currentColorTheme = ValueNotifier<int?>(null);
+
   ValueNotifier<int?> get currentColorTheme => _currentColorTheme;
 
-  Future<void> init() async {
-    _sharedPreferences = await SharedPreferences.getInstance();
-    getIsDarkTheme();
-    getColorTheme();
+  Future<void> init(
+    FlexScheme colorScheme,
+    bool isDarkMode,
+  ) async {
+    currentColorTheme.value = colorScheme.index;
+    this.isDarkMode.value = isDarkMode;
   }
 
-  Future<void> setDarkTheme(bool value) async {
-    await _sharedPreferences.setBool(_themeModeKey, value);
+  void setDarkTheme(bool value) {
+    final currentUser = _databaseService.getCurrentUser();
+    currentUser.isDarkMode = value;
+
+    _databaseService.addUser(currentUser);
     _isDarkMode.value = value;
-  }
-
-  void getIsDarkTheme() async {
-    final isDarkMode = _sharedPreferences.getBool(_themeModeKey);
-    _isDarkMode.value = isDarkMode;
   }
 
   bool getIsDarkMode(BuildContext context) {
@@ -42,17 +43,16 @@ class ThemeSwitcherService {
     return isDarkMode;
   }
 
-  Future<void> setColorTheme(int value) async {
-    await _sharedPreferences.setInt(_themeColorKey, value);
-    _currentColorTheme.value = value;
-  }
+  void setColorTheme(FlexScheme scheme) {
+    final currentUser = _databaseService.getCurrentUser();
+    currentUser.theme = scheme;
 
-  void getColorTheme() async {
-    final colorThemeIndex = _sharedPreferences.getInt(_themeColorKey);
-    _currentColorTheme.value = colorThemeIndex;
+    _databaseService.addUser(currentUser);
+    _currentColorTheme.value = scheme.index;
   }
 
   Future<void> resetTheme() async {
-    await _sharedPreferences.clear();
+    currentColorTheme.value = FlexScheme.aquaBlue.index;
+    isDarkMode.value = false;
   }
 }
